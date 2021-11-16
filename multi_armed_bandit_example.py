@@ -50,9 +50,9 @@ def brain_bandit_2():
 def brain_bandit_3():
     r = random()
     if (r >= 0.9):
-        profit = 35
+        profit = 45
     else:
-        profit = 1
+        profit = 0
     ## Expected profit per play: 4.4
     return profit
 
@@ -65,8 +65,10 @@ app.layout = html.Div(
                              children=[
                                  html.H2('Reinforcement Learning: A multi-armed bandit example'),
                                  html.Br(),
-                                 html.P('''How to play: You have 10 token coins and there are three bandits to spend your coins on. 
-                                        Click on a bandit to play that bandit and use one of your tokens'''),
+                                 html.P('''How to play: You have 10 token coins and there are three slot machines (bandits) to spend your coins on. 
+                                           Click on a bandit to play and use one of your tokens. 
+                                           '''),
+                                 html.P('''On the right hand side you can see your profit.'''),
                                  html.P('''The objective is to win as much money as possible so good luck!'''),
                                  html.Br(),
                                  html.Br(),
@@ -91,8 +93,8 @@ app.layout = html.Div(
                          x='Number of coin tokens left',
                          y='Total profit',
                          template='plotly_dark').update_layout(
-                                   {'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                                    'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,105])
+                                   {'plot_bgcolor': 'rgba(30, 30, 30, 30)',
+                                    'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
                                     ),
                              dash_table.DataTable(
                                  id='table',
@@ -100,14 +102,25 @@ app.layout = html.Div(
                                  data=df.to_dict('records'),
                                     style_data_conditional=[{
                                         'if': {'column_editable': False},
-                                        'backgroundColor': 'rgba(0, 0, 0, 0)',
+                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'grey'
-                                    }],
+                                    },{
+                                        'if': {'column_id': 'Total profit'},
+                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
+                                        'color': 'floralwhite',
+                                        'fontWeight' : 'bold'
+                                        }],
                                     style_header_conditional=[{
                                         'if': {'column_editable': False},
-                                        'backgroundColor': 'rgba(0, 0, 0, 0)',
+                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'white'
-                                    }],
+                                    },{
+                                        'if': {'column_id': 'Total profit'},
+                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
+                                        'color': 'floralwhite',
+                                        'fontWeight' : 'bold'
+                                       }
+                                        ],
                                 )
                             ])
                              ])
@@ -162,7 +175,7 @@ def update_audit_table(df, *args):
                   x='Number of coin tokens left',
                   y='Total profit',
                   template='plotly_dark').update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,105])
+           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
     df = df.to_dict('records')
     return df, fig
         
