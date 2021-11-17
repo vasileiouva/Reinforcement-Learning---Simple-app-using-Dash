@@ -7,6 +7,9 @@ Simply download or fork the repo, install the packages in the requirements.txt f
 
 The app will give you a [local url](http://127.0.0.1:8050/) that you can copy paste on your browser to access the front-end and play the game. Enjoy!
 
+# How does it look like?
+Here's a Demo: ![Demo](Demo.gif)
+
 # What is the tech stack of the App?
 Python 3 and Dash. Oh, and a little bit of CSS!
 
