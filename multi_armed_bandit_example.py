@@ -21,12 +21,12 @@ n_coins = 10
 df = pd.DataFrame(columns=['Number of coin tokens left', 
                            'Last bandit played',
                            'Profit from the last bandit', 
-                           'Total profit'])
+                           'Total profit (£)'])
 
 df = df.append({'Number of coin tokens left': n_coins, 
                 'Last bandit played': 'None played yet',
                 'Profit from the last bandit': 0, 
-                'Total profit': 0}, ignore_index=True)
+                'Total profit (£)': 0}, ignore_index=True)
 
 #### The brains of our bandits ----
 def brain_bandit_1():
@@ -68,21 +68,28 @@ app.layout = html.Div(
                                  html.P('''How to play: You have 10 token coins and there are three slot machines (bandits) to spend your coins on. 
                                            Click on a bandit to play and use one of your tokens. 
                                            '''),
-                                 html.P('''On the right hand side you can see your profit.'''),
                                  html.P('''The objective is to win as much money as possible so good luck!'''),
                                  html.Br(),
                                  html.Br(),
                                  html.Br(),
                                  html.Br(),
+                                 html.P('Click any of the bandits below to play!'),
                                  html.Br(),
                                  html.Div([
-                                 html.Button('Bandit 1: \"No dream is ever just a dream\"', id='btn-nclicks-1', n_clicks=0),
+                                 html.Button('Bandit 1: \"No dream is ever just a dream\"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                                     'color': 'black',
+                                                                                                     'border': 'none'
+                                                                                                     },  id='btn-nclicks-1', n_clicks=0),
                                  html.Br(),
                                  html.Br(),
-                                 html.Button('Bandit 2: \"Initiative comes to thems that wait\"', id='btn-nclicks-2', n_clicks=0),
+                                 html.Button('Bandit 2: \"Initiative comes to thems that wait\"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                                     'color': 'black',
+                                                                                                     'border': 'none'}, id='btn-nclicks-2', n_clicks=0),
                                  html.Br(),
                                  html.Br(),
-                                 html.Button('Bandit 3: \"Here\'s Johnny!\"', id='btn-nclicks-3', n_clicks=0),
+                                 html.Button('Bandit 3: \"Here\'s Johnny!\"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                                     'color': 'black',
+                                                                                                     'border': 'none'}, id='btn-nclicks-3', n_clicks=0),
                                  html.Div(id='bandits')])
                                 ]
                              ),
@@ -91,11 +98,12 @@ app.layout = html.Div(
                                  dcc.Graph(id='timeseries', config={'displayModeBar': False}, animate=True,
                                  figure=px.line(df,
                          x='Number of coin tokens left',
-                         y='Total profit',
+                         y='Total profit (£)',
                          template='plotly_dark').update_layout(
                                    {'plot_bgcolor': 'rgba(30, 30, 30, 30)',
                                     'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
                                     ),
+                             # TODO: html.Div(id='live-update-text', 'Number of coin tokens left: {}'.format(df['Number of coin tokens left'].iat[-1])),
                              dash_table.DataTable(
                                  id='table',
                                  columns=[{"name": i, "id": i} for i in df.columns],
@@ -105,7 +113,7 @@ app.layout = html.Div(
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'grey'
                                     },{
-                                        'if': {'column_id': 'Total profit'},
+                                        'if': {'column_id': 'Total profit (£)'},
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'floralwhite',
                                         'fontWeight' : 'bold'
@@ -115,7 +123,7 @@ app.layout = html.Div(
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'white'
                                     },{
-                                        'if': {'column_id': 'Total profit'},
+                                        'if': {'column_id': 'Total profit (£)'},
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'floralwhite',
                                         'fontWeight' : 'bold'
@@ -169,11 +177,11 @@ def update_audit_table(df, *args):
         df = df.append({'Number of coin tokens left': coins_left - 1, 
                         'Last bandit played': last_bandit,
                         'Profit from the last bandit': profit_now, 
-                        'Total profit': total_profit + profit_now}, 
+                        'Total profit (£)': total_profit + profit_now}, 
                         ignore_index=True)
     fig = px.line(df,
                   x='Number of coin tokens left',
-                  y='Total profit',
+                  y='Total profit (£)',
                   template='plotly_dark').update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
            'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
     df = df.to_dict('records')
