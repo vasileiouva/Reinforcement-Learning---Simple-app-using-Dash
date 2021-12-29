@@ -1,11 +1,15 @@
 # What is the purpose of this app?
-I created this app in order to illustrate the exploration-exploitation trade-off, one of the main concepts in Reinforcement Learning. 
+I created this app in order to illustrate the exploration-exploitation trade-off, one of the most important concepts in Reinforcement Learning. 
 
 # How do we run it?
-Simply download or fork the repo, install the packages in the requirements.txt file using the command `pip install -r requirements.txt` and then run it using the command
+There are two ways to run the app:
+1) Simply download or fork the repo, install the packages in the requirements.txt file using the command `pip install -r requirements.txt` and then run it using the command
 `python multi_armed_bandit_example.py`
+2) You can use Docker to run it as well! Assuming that you already have Docker installed, run the following commands:
+    -  docker build -t multi-armed-bandit-example .
+    - docker run -p 8050:8050 multi-armed-bandit-example
 
-The app will give you a [local url](http://127.0.0.1:8050/) that you can copy paste on your browser to access the front-end and play the game. Enjoy!
+The app will give you a [local url](http://localhost:8050) that you can copy paste on your favourite browser to play the game. Enjoy!
 
 # How does it look like?
 Here's a Demo: ![Demo](Demo.gif)
