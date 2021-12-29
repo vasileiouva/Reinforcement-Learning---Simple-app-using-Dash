@@ -205,4 +205,5 @@ def update_audit_table(df, *args):
         
 #### Start the app ----
 if __name__ == '__main__':
-    app.run_server(host='127.0.0.1', port=8050)
+    # app.run_server(host='127.0.0.1', debug=True ,port=8050)
+    app.run_server(host='0.0.0.0', port=8050)
