@@ -21,12 +21,12 @@ n_coins = 10
 df = pd.DataFrame(columns=['Number of coin tokens left', 
                            'Last bandit played',
                            'Profit from the last bandit', 
-                           'Total profit (£)'])
+                           'Total profit'])
 
 df = df.append({'Number of coin tokens left': n_coins, 
                 'Last bandit played': 'None played yet',
                 'Profit from the last bandit': 0, 
-                'Total profit (£)': 0}, ignore_index=True)
+                'Total profit': 0}, ignore_index=True)
 
 #### The brains of our bandits ----
 def brain_bandit_1():
@@ -53,7 +53,7 @@ def brain_bandit_3():
         profit = 45
     else:
         profit = 0
-    ## Expected profit per play: 4.4
+    ## Expected profit per play: 4.5
     return profit
 
 #### App layout (Our frontend/UI) ----
@@ -98,12 +98,17 @@ app.layout = html.Div(
                                  dcc.Graph(id='timeseries', config={'displayModeBar': False}, animate=True,
                                  figure=px.line(df,
                          x='Number of coin tokens left',
-                         y='Total profit (£)',
+                         y='Total profit',
                          template='plotly_dark').update_layout(
                                    {'plot_bgcolor': 'rgba(30, 30, 30, 30)',
                                     'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
                                     ),
-                             # TODO: html.Div(id='live-update-text', 'Number of coin tokens left: {}'.format(df['Number of coin tokens left'].iat[-1])),
+                                     html.Div(children=[
+            html.P(id = 'live-update-text-coins-left', children = 'Number of coin tokens left: 10'),
+            html.P(id = 'live-update-text-total-profit', children = 'Total profit: £0')
+            ], style={'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '3vw', 'margin-top': '3vw'}),
+            html.Br(),
+            html.Br(),
                              dash_table.DataTable(
                                  id='table',
                                  columns=[{"name": i, "id": i} for i in df.columns],
@@ -149,6 +154,8 @@ Uncomment to see why:
 @app.callback(
     [Output('table', 'data'),
      Output('timeseries', 'figure'),
+     Output('live-update-text-coins-left', 'children'),
+     Output('live-update-text-total-profit', 'children'),
      ],
     [
     Input('table', 'data'),
@@ -177,15 +184,17 @@ def update_audit_table(df, *args):
         df = df.append({'Number of coin tokens left': coins_left - 1, 
                         'Last bandit played': last_bandit,
                         'Profit from the last bandit': profit_now, 
-                        'Total profit (£)': total_profit + profit_now}, 
+                        'Total profit': total_profit + profit_now}, 
                         ignore_index=True)
-    fig = px.line(df,
-                  x='Number of coin tokens left',
-                  y='Total profit (£)',
-                  template='plotly_dark').update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-           'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
-    df = df.to_dict('records')
-    return df, fig
+    to_retun_fig = px.line(df,
+                           x='Number of coin tokens left',
+                           y='Total profit',
+                           template='plotly_dark').update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                                                                  'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
+    to_return_coins_left = 'Number of coin tokens left: {}'.format(df['Number of coin tokens left'].iat[-1])
+    to_return_profit = 'Total profit: £{}'.format(df['Total profit'].iat[-1])
+    to_return_df = df.to_dict('records')
+    return to_return_df, to_retun_fig, to_return_coins_left, to_return_profit
         
 #### Start the app ----
 if __name__ == '__main__':
