@@ -76,20 +76,20 @@ app.layout = html.Div(
                                  html.P('Click any of the bandits below to play!'),
                                  html.Br(),
                                  html.Div([
-                                 html.Button('Bandit 1: \"No dream is ever just a dream\"', style = {'background-color': 'rgb(255, 255, 255)', 
-                                                                                                     'color': 'black',
-                                                                                                     'border': 'none'
+                                 html.Button('Bandit 1: \"The Fellowship of the Ring\"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                                  'color': 'black',
+                                                                                                  'border': 'none'
                                                                                                      },  id='btn-nclicks-1', n_clicks=0),
                                  html.Br(),
                                  html.Br(),
-                                 html.Button('Bandit 2: \"Initiative comes to thems that wait\"', style = {'background-color': 'rgb(255, 255, 255)', 
-                                                                                                     'color': 'black',
-                                                                                                     'border': 'none'}, id='btn-nclicks-2', n_clicks=0),
+                                 html.Button('Bandit 2: \"The Two Towers\"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                       'color': 'black',
+                                                                                       'border': 'none'}, id='btn-nclicks-2', n_clicks=0),
                                  html.Br(),
                                  html.Br(),
-                                 html.Button('Bandit 3: \"Here\'s Johnny!\"', style = {'background-color': 'rgb(255, 255, 255)', 
-                                                                                                     'color': 'black',
-                                                                                                     'border': 'none'}, id='btn-nclicks-3', n_clicks=0),
+                                 html.Button('Bandit 3: \"The Return of the King"', style = {'background-color': 'rgb(255, 255, 255)', 
+                                                                                             'color': 'black',
+                                                                                             'border': 'none'}, id='btn-nclicks-3', n_clicks=0),
                                  html.Div(id='bandits')])
                                 ]
                              ),
@@ -104,36 +104,43 @@ app.layout = html.Div(
                                     'paper_bgcolor': 'rgba(0, 0, 0, 0)'}).update_xaxes(range=[10,0]).update_yaxes(range=[0,140])
                                     ),
                                      html.Div(children=[
-            html.P(id = 'live-update-text-coins-left', children = 'Number of coin tokens left: 10'),
-            html.P(id = 'live-update-text-total-profit', children = 'Total profit: £0')
+            html.H5(id = 'live-update-text-coins-left', children = 'Number of coin tokens left: 10'),
+            html.H5(id = 'live-update-text-total-profit', children = 'Total profit: £0')
             ], style={'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '3vw', 'margin-top': '3vw'}),
-            html.Br(),
-            html.Br(),
                              dash_table.DataTable(
                                  id='table',
                                  columns=[{"name": i, "id": i} for i in df.columns],
                                  data=df.to_dict('records'),
-                                    style_data_conditional=[{
+                                    style_data_conditional=[
+                                    {
                                         'if': {'column_editable': False},
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'grey'
-                                    },{
-                                        'if': {'column_id': 'Total profit (£)'},
-                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
-                                        'color': 'floralwhite',
-                                        'fontWeight' : 'bold'
-                                        }],
-                                    style_header_conditional=[{
+                                    },
+                                    {
+                                        'if': {'column_id': 'Number of coin tokens left'},
+                                        'display': 'None'
+                                    },
+                                    {
+                                        'if': {'column_id': 'Total profit'},
+                                        'display': 'None'
+                                    }
+                                    ],
+                                    style_header_conditional=[
+                                    {
                                         'if': {'column_editable': False},
                                         'backgroundColor': 'rgba(30, 30, 30, 30)',
                                         'color': 'white'
-                                    },{
-                                        'if': {'column_id': 'Total profit (£)'},
-                                        'backgroundColor': 'rgba(30, 30, 30, 30)',
-                                        'color': 'floralwhite',
-                                        'fontWeight' : 'bold'
-                                       }
-                                        ],
+                                    },
+                                    {
+                                        'if': {'column_id': 'Number of coin tokens left'},
+                                        'display': 'None'
+                                    },
+                                    {
+                                        'if': {'column_id': 'Total profit'},
+                                        'display': 'None'
+                                    }
+                                    ]
                                 )
                             ])
                              ])
